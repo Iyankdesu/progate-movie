@@ -6,6 +6,7 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -69,6 +70,7 @@ const MovieDetail = ({ route }: any): JSX.Element => {
   if (!movie) {
     return (
       <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
         <Text>Loading...</Text>
       </View>
     )
@@ -140,7 +142,9 @@ const MovieDetail = ({ route }: any): JSX.Element => {
           <Text style={styles.title}>{movie.title}</Text>
           <View style={styles.ratingContainer}>
             {renderStars(Math.round(movie.vote_average / 2))}
-            <Text style={styles.ratingText}>{movie.vote_average}</Text>
+            <Text style={styles.ratingText}>
+              {Math.round(movie.vote_average * 10) / 10}
+            </Text>
           </View>
           <TouchableOpacity
             onPress={handleFavoritePress}
@@ -163,7 +167,9 @@ const MovieDetail = ({ route }: any): JSX.Element => {
           </View>
           <View style={styles.detailColumn}>
             <Text style={styles.detailLabel}>Popularity</Text>
-            <Text style={styles.detailValue}>{movie.popularity}</Text>
+            <Text style={styles.detailValue}>
+              {Math.round(movie.popularity)}
+            </Text>
           </View>
         </View>
 
@@ -199,6 +205,12 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 16,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -222,10 +234,6 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 16,
-  },
-  loadingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   overview: {
     fontSize: 16,
