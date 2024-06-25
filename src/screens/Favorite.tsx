@@ -13,7 +13,7 @@ import type { Movie } from '../types/app'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 
 const { width } = Dimensions.get('window')
-const cardWidth = width / 3 - 12 // Menentukan lebar setiap kartu dengan margin
+const cardWidth = width / 3 - 12
 
 const Favorite = (): JSX.Element => {
   const [favoriteMovies, setFavoriteMovies] = useState<Movie[]>([])
@@ -96,12 +96,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   columnWrapper: {
-    justifyContent: 'space-between', // Memastikan kartu tersebar merata
+    justifyContent: 'space-between',
   },
   card: {
     width: cardWidth,
     margin: 4,
-    height: cardWidth * 1.5, // Menjaga rasio aspek tetap, bisa disesuaikan
+    height: cardWidth * 1.5,
     borderRadius: 8,
     overflow: 'hidden',
   },
