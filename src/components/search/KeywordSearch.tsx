@@ -9,6 +9,9 @@ import {
   ImageBackground,
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { FontAwesome } from '@expo/vector-icons'
+import type { Movie } from '../../types/app'
+import { LinearGradient } from 'expo-linear-gradient'
 import { API_ACCESS_TOKEN } from '@env'
 
 const KeywordSearch = (): JSX.Element => {
@@ -17,10 +20,6 @@ const KeywordSearch = (): JSX.Element => {
   const navigation = useNavigation()
 
   const searchMovies = async (): Promise<void> => {
-    if (keyword.trim() === '') {
-      return
-    }
-
     const url = `https://api.themoviedb.org/3/search/movie?query=${keyword}`
     const options = {
       method: 'GET',
@@ -39,19 +38,33 @@ const KeywordSearch = (): JSX.Element => {
     }
   }
 
-  const renderMovieItem = ({ item }: { item: any }): JSX.Element => (
+  const renderMovieItem = ({ item }: { item: Movie }): JSX.Element => (
     <TouchableOpacity
       style={styles.card}
       // @ts-ignore
       onPress={() => navigation.navigate('MovieDetail', { id: item.id })}
     >
       <ImageBackground
-        source={{ uri: `https://image.tmdb.org/t/p/w500${item.poster_path}` }}
+        source={{
+          uri: `https://image.tmdb.org/t/p/w500${(item as Movie).poster_path}`,
+        }}
         style={styles.cardImage}
       >
-        <View style={styles.cardOverlay}>
-          <Text style={styles.cardTitle}>{item.title}</Text>
-        </View>
+        <LinearGradient
+          colors={['#00000000', 'rgba(0, 0, 0, 0.7)']}
+          locations={[0.6, 0.8]}
+          style={styles.gradientStyle}
+        >
+          <View>
+            <Text style={styles.cardTitle}>{(item as Movie).title}</Text>
+          </View>
+          <View style={styles.ratingContainer}>
+            <FontAwesome name="star" size={16} color="yellow" />
+            <Text style={styles.rating}>
+              {(item as Movie).vote_average.toFixed(1)}
+            </Text>
+          </View>
+        </LinearGradient>
       </ImageBackground>
     </TouchableOpacity>
   )
@@ -64,6 +77,12 @@ const KeywordSearch = (): JSX.Element => {
         onChangeText={setKeyword}
         placeholder="Search movies..."
         onSubmitEditing={searchMovies}
+      />
+      <FontAwesome
+        name="search"
+        size={20}
+        color="gray"
+        style={styles.searchIcon}
       />
       <FlatList
         data={movies}
@@ -84,6 +103,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     paddingHorizontal: 8,
     borderRadius: 20,
+    paddingLeft: 20,
+  },
+  searchIcon: {
+    position: 'absolute',
+    right: 18,
+    top: 8,
   },
   resultsContainer: {
     padding: 8,
@@ -99,14 +124,27 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
-  cardOverlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: 8,
-  },
   cardTitle: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 14,
+  },
+  gradientStyle: {
+    padding: 8,
+    height: '100%',
+    width: '100%',
+    borderRadius: 8,
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+  },
+  rating: {
+    color: 'yellow',
+    fontWeight: '700',
   },
 })
 

@@ -11,6 +11,8 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import type { Movie } from '../types/app'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import { FontAwesome } from '@expo/vector-icons'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const { width } = Dimensions.get('window')
 const cardWidth = width / 3 - 12
@@ -43,7 +45,7 @@ const Favorite = (): JSX.Element => {
     }
   }, [favoriteMovies])
 
-  const renderMovieItem = ({ item }: { item: Movie | {} }): JSX.Element =>
+  const renderMovieItem = ({ item }: { item: Movie }): JSX.Element =>
     'id' in item ? (
       <TouchableOpacity
         style={styles.card}
@@ -58,9 +60,21 @@ const Favorite = (): JSX.Element => {
           }}
           style={styles.cardImage}
         >
-          <View style={styles.cardOverlay}>
-            <Text style={styles.cardTitle}>{(item as Movie).title}</Text>
-          </View>
+          <LinearGradient
+            colors={['#00000000', 'rgba(0, 0, 0, 0.7)']}
+            locations={[0.6, 0.8]}
+            style={styles.gradientStyle}
+          >
+            <View>
+              <Text style={styles.cardTitle}>{(item as Movie).title}</Text>
+            </View>
+            <View style={styles.ratingContainer}>
+              <FontAwesome name="star" size={16} color="yellow" />
+              <Text style={styles.rating}>
+                {(item as Movie).vote_average.toFixed(1)}
+              </Text>
+            </View>
+          </LinearGradient>
         </ImageBackground>
       </TouchableOpacity>
     ) : (
@@ -79,7 +93,7 @@ const Favorite = (): JSX.Element => {
     <FlatList
       data={favoriteMovies}
       renderItem={renderMovieItem}
-      keyExtractor={(item, index) => index.toString()}
+      keyExtractor={(item) => item.id.toString()}
       numColumns={3}
       contentContainerStyle={styles.container}
       columnWrapperStyle={styles.columnWrapper}
@@ -113,14 +127,27 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
-  cardOverlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: 8,
-  },
   cardTitle: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 14,
+  },
+  gradientStyle: {
+    padding: 8,
+    height: '100%',
+    width: '100%',
+    borderRadius: 8,
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+  },
+  rating: {
+    color: 'yellow',
+    fontWeight: '700',
   },
 })
 
