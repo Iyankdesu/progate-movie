@@ -1,4 +1,4 @@
-Movie apps project using IMDB API.
+Movie apps project using TMDB API.
 
 ## Setup
 
