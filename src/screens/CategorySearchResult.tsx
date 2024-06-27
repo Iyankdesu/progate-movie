@@ -42,6 +42,7 @@ const CategorySearchResult = (): JSX.Element => {
   const renderMovieItem = ({ item }: { item: any }): JSX.Element => (
     <TouchableOpacity
       style={styles.card}
+      // @ts-ignore
       onPress={() => navigation.navigate('MovieDetail', { id: item.id })}
     >
       <ImageBackground

@@ -47,6 +47,7 @@ const CategorySearch = (): JSX.Element => {
 
   const handleSearch = () => {
     if (selectedGenre !== null) {
+      // @ts-ignore
       navigation.navigate('CategorySearchResult', { genreId: selectedGenre })
     }
   }

@@ -48,6 +48,7 @@ const Favorite = (): JSX.Element => {
       <TouchableOpacity
         style={styles.card}
         onPress={() =>
+          // @ts-ignore
           navigation.navigate('MovieDetail', { id: (item as Movie).id })
         }
       >
