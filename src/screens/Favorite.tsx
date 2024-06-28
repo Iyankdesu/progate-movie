@@ -93,7 +93,7 @@ const Favorite = (): JSX.Element => {
     <FlatList
       data={favoriteMovies}
       renderItem={renderMovieItem}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item, index) => index.toString()}
       numColumns={3}
       contentContainerStyle={styles.container}
       columnWrapperStyle={styles.columnWrapper}
